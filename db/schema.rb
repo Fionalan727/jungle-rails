@@ -66,8 +66,7 @@ ActiveRecord::Schema.define(version: 20190517162023) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "name"
     t.string   "email"
     t.string   "password_digest"
     t.datetime "created_at",      null: false
@@ -77,5 +76,4 @@ ActiveRecord::Schema.define(version: 20190517162023) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "products", "categories"
-  
 end

@@ -7,7 +7,6 @@
   <article class="product-detail">
 
     <div class="row">
-
       <div class="col-sm-4">
         <%= image_tag @product.image.url, class: 'main-img' %>
       </div>
@@ -24,20 +23,11 @@
           <dd><%= @product.price %></dd>
         </dl>
       </div>
+      <% if current_user %>
       <div class="row">
       <div class="col-sm-6 col-sm-offset-1">
-        <%= form_for [@product, @review] do |form| %>
-          <% if form.object.errors.any? %>
-            <div class="alert alert-danger">
-              <strong>The following errors prevented saving:</strong>
-              <ul>
-                <% form.object.errors.full_messages.each do |error| %>
-                  <li><%= error %></li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
-
+        <%= form_for [@product, @review], url:`/products/#{@product.id}/reviews` do |form| %>
+        
            <div class="form-group">
             <p>Enter a rating for this item</p>
             <%= form.select :rating, [1, 2, 3, 4, 5] %>
@@ -51,17 +41,26 @@
            <%= form.submit 'Submit rating', class: 'btn btn-primary' %>
         <% end %>
       </div>
+      <% end %>
     </div>
+
+      <% if @sort.size > 0 %>
       <div class="row">
-        <div class="col-sm-6 col-sm-offset-1">
           <p>reviews</p>
-          <% @product.reviews.each do |review| %>
+          <% @sort.each do |review| %>
             <p> <%= review.description %> </p>
             <p> <%= review.rating %> </p>
 
-          <% end %>
-        </div>
+      <% if current_user == User.find(review.user_id) %>
+            <%= link_to 'Delete', product_review_path(review.product_id, review.id), method: :delete %>
+      <% end %>
+      <% end %>
     </div>
+    <% elsif @sort.size == 0 && !current_user %>
+            <h2>NO REVIEWS</h2>
+    <% else %>
+            <h2>LEAVE A REVIEW HERE</h2>
+    <% end %>
 
   </article>
 

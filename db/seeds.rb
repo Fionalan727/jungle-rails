@@ -132,25 +132,25 @@ cat3.products.create!({
   price: 2_483.75
 })
 
-Review.create!({
+##USERS
+
+user1 = User.find_or_create_by!({
+  name: "test",
+  email: "test",
+  password_digest: "test"
+})
+
+##REVIEWS
+
+prod1 = Product.find_by! id: 1
+
+Review.destroy_all
+
+prod1.reviews.create!({
   product_id: 1, 
   user_id: 1, 
   description: "item sux",
   rating: 1
-})
-
- Review.create!({
-  product_id: 11, 
-  user_id: 2, 
-  description: "Kneel!!!!!!",
-  rating: 5
-})
-
- Review.create!({
-  product_id: 10, 
-  user_id: 1, 
-  description: "item is ok",
-  rating: 3
 })
 
 

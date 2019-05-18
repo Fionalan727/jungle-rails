@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'products#index'
 
   resources :products, only: [:index, :show] do 
-    resources :reviews, only: [:create] 
+    resources :reviews, only: [:create, :destroy] 
   end
   
   resources :categories, only: [:show]
@@ -16,7 +16,8 @@ Rails.application.routes.draw do
   end
 
   resources :orders, only: [:create, :show]
-  resources :users, only: [:create, :new]
+
+
   get '/signup' => 'users#new'
   post '/users' => 'users#create'
   get '/login' => 'sessions#new'

@@ -1,27 +1,46 @@
 class ReviewsController < ApplicationController
-    def create
-        @review = Review.new(review_params)
-        @review.user_id = session[:user_id]
-        @review.product_id = params[:product_id]
-        @review.user = current_user
-        if @review.save
+    before_action :delete_review, :only => [:destroy]
+    before_action :new_review, :only => [:create]
 
-          redirect_to "/products/#{@review.product_id}"
+    def create
+
+        @review = Review.new(review_params)
+        @review.user = current_user
+        @review.product_id = params[:product_id]
+ 
+    
+        if @review.save
+          redirect_to product_path(params[:product_id])
         else
-          raise "rating failed to submit!"
+          redirect_to :back
         end
+    
       end
     
+      def destroy
+        @delete.destroy
+        redirect_to product_path(@delete.product_id)
+      end
+
        private
     
        def review_params
         params.require(:review).permit(
-          :product_id,
-          :user_id,
+     
           :description,
-          :rating,
-          :created_at,
-          :updated_at
+          :rating
+        
         )
       end
+
+      protected
+
+      def new_review
+        @review = Review.new(review_params)
+      end
+
+      def delete_review
+        @delete = Review.find params[:id]
+      end
+
 end
